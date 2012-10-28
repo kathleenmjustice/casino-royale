@@ -13,7 +13,7 @@ import java.awt.event.ActionListener;
 
 public class Casinogui {
 	private JFrame frame;
-	private JLabel welcomeToBlackjack;
+	private JFrame blackjackFrame;
 	public static void main(String[] args){
 		EventQueue.invokeLater(new Runnable() {
 		  public void run() {
@@ -48,17 +48,16 @@ public class Casinogui {
 			public void actionPerformed(ActionEvent e) {
 				JComboBox cb = (JComboBox)e.getSource();        
 				String gameName = (String)cb.getSelectedItem();
-				if (gameName == "Blackjack"){
-					blackjackGUI();
+				if (gameName == "Blackjack")
+					try {
+						Blackjackgui blackjackWindow = new Blackjackgui(blackjackFrame);
+						blackjackWindow.blackjackFrame.setVisible(true);
+					} catch (Exception ee) {
+						System.out.println("Could not create Casino gui");
+						ee.printStackTrace();
+					}
 				}
-		    }
-		});
+		    });
+		}
 
-	}
-	public void blackjackGUI(){
-		welcomeToBlackjack = new JLabel("Welcome to the game of Blackjack!") ;
-		frame.getContentPane().add(welcomeToBlackjack);
-		Blackjack blackjackGame = new Blackjack();
-		blackjackGame.wager();
-	}
 }
