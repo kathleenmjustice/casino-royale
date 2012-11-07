@@ -66,7 +66,7 @@ public Container drawWelcomeScreen(){
 		// Initialize containers
 		JLayeredPane contentPane = new JLayeredPane();
 		
-		JPanel backgroundPane = new ImagePanel(new ImageIcon("F:/CIS 634/Casino Royale/casino-royale/Casino Royale/src/croyale/resources/mainBackground.png").getImage());
+		JPanel backgroundPane = new ImagePanel(new ImageIcon("src/croyale/resources/mainBackground.png").getImage());
 	
 		JPanel foregroundPane = new JPanel(new BorderLayout());
 		//foregroundPane.setBorder(new EmptyBorder(5,5,5,5));
@@ -75,8 +75,8 @@ public Container drawWelcomeScreen(){
 				
 		// Add all containers to upper level containers
 		
-		contentPane.add(backgroundPane,4);
-		contentPane.add(foregroundPane,1);
+		contentPane.add(backgroundPane,1);
+		contentPane.add(foregroundPane,4);
 		
 		JLabel label = new JLabel();
 		label.setBackground(Color.cyan);
@@ -130,6 +130,7 @@ public Container drawWelcomeScreen(){
 class ImagePanel extends JPanel {
 
 	  private Image img;
+	  {setOpaque(false);} 
 
 	  public ImagePanel(String img) {
 	    this(new ImageIcon(img).getImage());
@@ -147,6 +148,7 @@ class ImagePanel extends JPanel {
 
 	  public void paintComponent(Graphics g) {
 	    g.drawImage(img, 0, 0, null);
+	    super.paintComponent(g);
 	  }
 
 	}
