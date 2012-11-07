@@ -24,7 +24,6 @@ public class Blackjackgui {
 	private void initialize() {
 		blackjackFrame = new JFrame();
 		blackjackFrame.setBounds(100, 100, 600, 600);
-		blackjackFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		//Set layout for JFrame  
 		blackjackFrame.setLayout(new FlowLayout());  
 
