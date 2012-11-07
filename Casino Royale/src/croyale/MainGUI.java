@@ -66,16 +66,20 @@ public Container drawWelcomeScreen(){
 		// Initialize containers
 		JLayeredPane contentPane = new JLayeredPane();
 		
-		JPanel backgroundPane = new ImagePanel(new ImageIcon("src/croyale/resources/mainBackground.png").getImage());
+		JLabel backgroundPane = new ImagePanel(new ImageIcon("src/croyale/resources/mainBackground.png").getImage());
 	
+		backgroundPane.setOpaque(false);
 		JPanel foregroundPane = new JPanel(new BorderLayout());
 		//foregroundPane.setBorder(new EmptyBorder(5,5,5,5));
 		//foregroundPane.setOpaque(true);
 		
+		
+		JTextArea mytext = new JTextArea("This is a test");
+		foregroundPane.add(mytext,BorderLayout.CENTER);
 				
 		// Add all containers to upper level containers
 		
-		contentPane.add(backgroundPane,1);
+	
 		contentPane.add(foregroundPane,4);
 		
 		JLabel label = new JLabel();
@@ -89,7 +93,6 @@ public Container drawWelcomeScreen(){
 	        label.setBounds(100, 100, 140, 140);
 
 		contentPane.add(label,3);
-		
 		label = new JLabel();
 		 label.setVerticalAlignment(JLabel.TOP);
 	        label.setHorizontalAlignment(JLabel.CENTER);
@@ -101,7 +104,8 @@ public Container drawWelcomeScreen(){
 	        
 
 			contentPane.add(label,5);
-	        
+
+			contentPane.add(backgroundPane,6);   
 		return contentPane;
 	}
 	
@@ -127,7 +131,7 @@ public Container drawWelcomeScreen(){
 
 }
 
-class ImagePanel extends JPanel {
+class ImagePanel extends JLabel {
 
 	  private Image img;
 	  {setOpaque(false);} 
