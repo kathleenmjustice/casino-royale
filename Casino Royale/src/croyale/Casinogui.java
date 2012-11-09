@@ -51,7 +51,7 @@ public class Casinogui {
 				if (gameName == "Blackjack")
 					try {
 						Blackjackgui blackjackWindow = new Blackjackgui(blackjackFrame);
-						blackjackWindow.blackjackFrame.setVisible(true);
+						//blackjackWindow.blackjackFrame.setVisible(true);
 					} catch (Exception ee) {
 						System.out.println("Could not create Casino gui");
 						ee.printStackTrace();
