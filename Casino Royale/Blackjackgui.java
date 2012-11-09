@@ -2,6 +2,8 @@ package croyale;
 
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -30,8 +32,6 @@ public class Blackjackgui {
 	}
 
 	protected JPanel contentPane;
-
-	JFrame blackjackFrame;
 	
 	protected static JFrame registerWindow;
 	
@@ -88,7 +88,7 @@ public class Blackjackgui {
 		JLayeredPane contentPane = new JLayeredPane();
 		
 		// Set background image as panel
-		JLabel backgroundPane = new ImagePanel(new ImageIcon("src/croyale/resources/blackjackTable.jpg").getImage());
+		JLabel backgroundPane = new ImagePanel(new ImageIcon("src/croyale/resources/blackjack table.jpg").getImage());
 		backgroundPane.setOpaque(false);
 		
 		// Initialize login form
@@ -134,4 +134,29 @@ public class Blackjackgui {
 	}
 		
 }
-	
+
+class ImagePanel extends JLabel {
+
+	  private Image img;
+	  {setOpaque(false);} 
+
+	  public ImagePanel(String img) {
+	    this(new ImageIcon(img).getImage());
+	  }
+
+	  public ImagePanel(Image img) {
+	    this.img = img;
+	    Dimension size = new Dimension(img.getWidth(null), img.getHeight(null));
+	    setPreferredSize(size);
+	    setMinimumSize(size);
+	    setMaximumSize(size);
+	    setSize(size);
+	    setLayout(null);
+	  }
+
+	  public void paintComponent(Graphics g) {
+	    g.drawImage(img, 0, 0, null);
+	    super.paintComponent(g);
+	  }
+
+	}

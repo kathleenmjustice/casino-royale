@@ -12,7 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Casinogui {
-	private JFrame frame;
+	JFrame frame;
 	private JFrame blackjackFrame;
 	public static void main(String[] args){
 		EventQueue.invokeLater(new Runnable() {
