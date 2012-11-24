@@ -3,6 +3,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+import croyale.games.BlackjackMVC;
 import croyale.gameutil.Blackjack;
 
 
@@ -50,7 +51,7 @@ public class Casinogui {
 				String gameName = (String)cb.getSelectedItem();
 				if (gameName == "Blackjack")
 					try {
-						Blackjackgui blackjackWindow = new Blackjackgui(blackjackFrame);
+						BlackjackMVC blackjackWindow = new BlackjackMVC();
 						//blackjackWindow.blackjackFrame.setVisible(true);
 					} catch (Exception ee) {
 						System.out.println("Could not create Casino gui");
