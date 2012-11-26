@@ -1,16 +1,14 @@
 package croyale.games;
 
-import java.awt.ComponentOrientation;
 import java.awt.Container;
 import java.awt.Graphics;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.Image;
 
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -24,25 +22,49 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
-import croyale.Blackjackgui;
-import croyale.Casinogui;
-import croyale.GameSession;
+import util.ParseString;
+
 //import croyale.ImagePanel;
-import croyale.gameutil.Blackjack;
 import croyale.gameutil.Play;
 
 public class BlackjackView {
-	BlackjackView(JFrame frame){
-	//	drawWelcomeScreen();
-		createAndShowGUI();
-	}
-	
-	public BlackjackView() {
-		// TODO Auto-generated constructor stub
-	}
 
+	private static Play currentPlay; // User's response, "Hit" or "Stand".
+	private JPanel m_enterBetL = new JPanel();
+	private JTextField m_betTf = new JTextField(5);
+	private JButton m_betBtn = new JButton("Bet");
+	private JPanel m_enterPlayL = new JPanel();
+	private JTextField m_currentPlayTf = new JTextField(10);
+	private JButton m_playBtn = new JButton("Play");
+	private JPanel m_balanceL = new JPanel();
+	private JTextField m_balanceTf = new JTextField(20);
+	private JTextArea m_outputTa = new JTextArea(40, 40);
+	private JLabel backgroundPane = new ImagePanel(new ImageIcon("src/croyale/resources/BlackjackTable.png").getImage());
+	BlackjackView(JFrame frame){
+		// Creates main program window
+		JFrame window = new JFrame("Blackjack");
+		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		// Create and set Menu in Frame
+		BlackjackView myGUI = new BlackjackView();
+		window.setJMenuBar(myGUI.createMenuBar());
+
+		// Initialize main screen
+		window.setContentPane(myGUI.drawWelcomeScreen(window.getContentPane()));
+		
+		// Display main program window
+		int windowWidth = 800;
+		int windowHeight = 600;
+		window.setBounds(50, 100, windowWidth, windowHeight);
+		window.setResizable(false);
+		window.setVisible(true);
+	}
+	BlackjackView(){
+	}
 	protected JPanel contentPane;
 
 	JFrame blackjackFrame;
@@ -96,99 +118,69 @@ public class BlackjackView {
 		return menuBar;
 	}
 
-	final static boolean shouldFill = true;
-	final static boolean shouldWeightX = true;
-	final static boolean RIGHT_TO_LEFT = false;
 	public Container drawWelcomeScreen(Container pane){
 
+		//Initialize components
+		this.m_balanceTf.setEditable(false);
+		this.m_outputTa.setEditable(false);
+		
 		// Initialize containers
 		JLayeredPane contentPane = new JLayeredPane();
 		
 		// Set background image as panel
-		JLabel backgroundPane = new ImagePanel(new ImageIcon("src/croyale/resources/BlackjackTable.png").getImage());
+		//JLabel backgroundPane = new ImagePanel(new ImageIcon("src/croyale/resources/BlackjackTable.png").getImage());
 		backgroundPane.setOpaque(false);
 
-		
-		//JPanel formContainer = new JPanel();
-		if (RIGHT_TO_LEFT) {
-			pane.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
-		}
-		pane.setLayout(new GridBagLayout());
-			GridBagConstraints c = new GridBagConstraints();
-			if (shouldFill) {
-				//natural height, maximum width
-				c.fill = GridBagConstraints.HORIZONTAL;
-			}
-			JButton hitButton = new JButton(new ImageIcon("src/croyale/resources/HIT poker chip.png"));
-			if (shouldWeightX) {
-				c.weightx = 5.5;
-			}
-			c.fill = GridBagConstraints.HORIZONTAL;
-			c.gridx = 0;
-			c.gridy = 0;
-			
-			JButton standButton= new JButton(new ImageIcon("src/croyale/resources/HIT poker chip.png"));
-			c.fill = GridBagConstraints.HORIZONTAL;
-			c.weightx = 0.5;
-			c.gridx = 1;
-			c.gridy = 0;
-			pane.add(standButton, c);
-
-
-	/*	formContainer.setLayout(new BoxLayout(formContainer,BoxLayout.Y_AXIS));
+		//Layout the components.
+		JPanel formContainer = new JPanel();
+		formContainer.setLayout(new BoxLayout(formContainer,BoxLayout.Y_AXIS));
 		formContainer.setOpaque(false);
-		formContainer.setBounds(300, 200, 400, 160);
+		formContainer.setBounds(300, 200, 400, 260);
+		//JButton m_hitBtn = new JButton(new ImageIcon("src/croyale/resources/HIT poker chip.png"));
+		//JButton standButton= new JButton(new ImageIcon("src/croyale/resources/HIT poker chip.png"));
+		//m_hitBtn.setPreferredSize(new Dimension(20,20));
+		
+		m_enterBetL.setLocation(10, 100);
+		m_enterBetL.setLayout(new BoxLayout(m_enterBetL, BoxLayout.X_AXIS));
+		m_enterBetL.setPreferredSize(new Dimension(100,5));
+		JLabel m_enterBetLText = new JLabel("Enter amount of Bet:");
+		m_enterBetL.add(m_enterBetLText);
+		formContainer.add(this.m_enterBetL);
+		formContainer.add(Box.createRigidArea(new Dimension(5,0)));
+		
+		formContainer.add(this.m_betTf);
+		formContainer.add(Box.createRigidArea(new Dimension(5,0)));
 
+		
+		formContainer.add(this.m_betBtn);
+		m_enterPlayL.setLayout(new BoxLayout(m_enterPlayL, BoxLayout.X_AXIS));
+		m_enterPlayL.setPreferredSize(new Dimension(100,20));
+		JLabel m_enterPlayLText = new JLabel("Enter play (Hit or Stand)");
+		m_enterPlayL.add(m_enterPlayLText);
+		formContainer.add(this.m_enterPlayL);
+		formContainer.add(Box.createRigidArea(new Dimension(5,0)));
+		
+		formContainer.add(this.m_currentPlayTf);
+		formContainer.add(this.m_playBtn);
+		
+		m_balanceL.setLocation(10, 100);
+		m_balanceL.setLayout(new BoxLayout(m_balanceL, BoxLayout.Y_AXIS));
+		m_balanceL.setPreferredSize(new Dimension(100,20));
+		JLabel m_balanceLText = new JLabel("balance:");
+		m_balanceL.add(m_balanceLText);
+		formContainer.add(this.m_balanceL);
+		formContainer.add(Box.createRigidArea(new Dimension(5,0)));
+
+		m_balanceTf.setLayout(new BoxLayout(m_balanceTf, BoxLayout.X_AXIS));
+		formContainer.add(this.m_balanceTf);
+		
+		formContainer.add(this.m_outputTa);
+		
 		contentPane.add(formContainer,1);
-		contentPane.add(backgroundPane,2);   
-	*/	
-		contentPane.add(pane,1);
 		contentPane.add(backgroundPane,2);
-		//JButton hitButton = new JButton(new ImageIcon("src/croyale/resources/HIT poker chip.png"));
-
-		hitButton.addActionListener(new ActionListener(){
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				
-				;//Blackjack currentBlackjack = new Blackjack();// TODO Auto-generated method stub
-			}
-		});
-		//hitButton.setBounds(150,150, 50, 50);
-		//formContainer.add(hitButton);
-		//formContainer.add(Box.createVerticalStrut(20));
 		return contentPane;
-		//return pane;
 	}
 	
-	public static void createAndShowGUI(){
-		
-		// Creates main program window
-		JFrame window = new JFrame("Blackjack");
-		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		// Create and set Menu in Frame
-		BlackjackView myGUI = new BlackjackView();
-		window.setJMenuBar(myGUI.createMenuBar());
-
-		// Initialize main screen
-		window.setContentPane(myGUI.drawWelcomeScreen(window.getContentPane()));
-        
-		// Display main program window
-		int windowWidth = 800;
-		int windowHeight = 600;
-		window.setBounds(50, 100, windowWidth, windowHeight);
-		window.setResizable(false);
-		window.setVisible(true);
-		
-		
-	}
-	
-
-	public Play getUserInput() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	private class ImagePanel extends JLabel {
 
 		  private Image img;
@@ -214,5 +206,49 @@ public class BlackjackView {
 		  }
 
 		}
+	public Play getCurrentPlay(){
+     	  ParseString parse = new ParseString();
+  		  try {
+  			try {
+  				parse.parseString(this.m_currentPlayTf.getText());
+  			} catch (NoSuchMethodException e) {
+  				// TODO Auto-generated catch block
+  				e.printStackTrace();
+  			} catch (SecurityException e) {
+  				// TODO Auto-generated catch block
+  				e.printStackTrace();
+  			} catch (IllegalArgumentException e) {
+  				// TODO Auto-generated catch block
+  				e.printStackTrace();
+  			} catch (InvocationTargetException e) {
+  				// TODO Auto-generated catch block
+  				e.printStackTrace();
+  			}
+  		} catch (ClassNotFoundException e) {
+  			// TODO Auto-generated catch block
+  			e.printStackTrace();
+  		} catch (InstantiationException e) {
+  			// TODO Auto-generated catch block
+  			e.printStackTrace();
+  		} catch (IllegalAccessException e) {
+  			// TODO Auto-generated catch block
+  			e.printStackTrace();
+  		}
+            
+    	return currentPlay;
+    }
+    public void setMoney(String newMoney){
+    	System.out.println("newMoney: " + newMoney);
+    	this.m_balanceTf.setText(newMoney);
+    }
+    public int getBet(){
+    	return Integer.parseInt(this.m_betTf.getText());
+    }
+    public void addPlayListener(ActionListener pal){
+    	this.m_playBtn.addActionListener(pal);
+    }
+    public void addBetListener(ActionListener bal){
+    	this.m_betBtn.addActionListener(bal);
+    }
 }
 	
