@@ -31,7 +31,8 @@ import util.ParseString;
 //import croyale.ImagePanel;
 import croyale.gameutil.Play;
 
-public class BlackjackView {
+@SuppressWarnings("serial")
+public class BlackjackView extends JFrame{
 
 	private static Play currentPlay; // User's response, "Hit" or "Stand".
 	private JPanel m_enterBetL = new JPanel();
@@ -44,24 +45,25 @@ public class BlackjackView {
 	private JTextField m_balanceTf = new JTextField(20);
 	private JTextArea m_outputTa = new JTextArea(40, 40);
 	private JLabel backgroundPane = new ImagePanel(new ImageIcon("src/croyale/resources/BlackjackTable.png").getImage());
+
 	BlackjackView(JFrame frame){
 		// Creates main program window
-		JFrame window = new JFrame("Blackjack");
-		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setTitle("Blackjack");
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		// Create and set Menu in Frame
 		BlackjackView myGUI = new BlackjackView();
-		window.setJMenuBar(myGUI.createMenuBar());
+		this.setJMenuBar(myGUI.createMenuBar());
 
 		// Initialize main screen
-		window.setContentPane(myGUI.drawWelcomeScreen(window.getContentPane()));
+		this.setContentPane(myGUI.drawWelcomeScreen(this.getContentPane()));
+		this.pack();
 		
 		// Display main program window
 		int windowWidth = 800;
 		int windowHeight = 600;
-		window.setBounds(50, 100, windowWidth, windowHeight);
-		window.setResizable(false);
-		window.setVisible(true);
+		this.setBounds(50, 100, windowWidth, windowHeight);
+		this.setResizable(false);
 	}
 	BlackjackView(){
 	}

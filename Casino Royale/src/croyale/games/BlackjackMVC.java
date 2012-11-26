@@ -8,6 +8,7 @@ public class BlackjackMVC {
 		BlackjackModel model = new BlackjackModel();
 		BlackjackView view = new BlackjackView(blackjackFrame);
 		BlackjackController controller = new BlackjackController(model,view);
-		
+	
+		view.setVisible(true);
 	}
 }
