@@ -49,7 +49,6 @@ public class BlackjackView extends JFrame{
 	BlackjackView(JFrame frame){
 		// Creates main program window
 		this.setTitle("Blackjack");
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		// Create and set Menu in Frame
 		BlackjackView myGUI = new BlackjackView();

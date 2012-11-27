@@ -27,11 +27,13 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
 import croyale.games.BlackjackMVC;
+import croyale.games.SlotMachineMVC;
 
 public class MainGUI {
 	protected static JFrame window;
 	protected static MainGUI myGUI;
 	protected JPanel contentPane;
+	protected static JPanel gameFrame;
 	protected JTextField userIDinput, userPWinput;
 	protected JTextField r_userIDinput, r_userPWinput;
 	protected JTextField nameinput, emailinput, phoneinput, addressinput, balanceinput;
@@ -198,7 +200,7 @@ public class MainGUI {
 		gameContainer.setOpaque(false);
 		gameContainer.setBounds(0, 200, 1000, 600);
 		
-		String[] games = {"Blackjack"};
+		String[] games = {"Blackjack","Slot Machine"};
 		JComboBox<String> gamesComboBox = new JComboBox<String>(games);
 		gamesComboBox.setSelectedItem(null);
 		gamesComboBox.setMaximumSize(gamesComboBox.getPreferredSize());
@@ -209,8 +211,12 @@ public class MainGUI {
 		
 		leftPane.add(Box.createHorizontalStrut(50));
 		leftPane.add(gamesComboBox);
+		leftPane.add(Box.createHorizontalStrut(75));
 
+		gameFrame = new JPanel();
 		gameContainer.add(leftPane,BorderLayout.LINE_START);
+		gameContainer.add(gameFrame,BorderLayout.CENTER);
+		
 		gamesComboBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JComboBox cb = (JComboBox)e.getSource();        
@@ -219,6 +225,15 @@ public class MainGUI {
 					try {
 						
 						BlackjackMVC blackjackWindow = new BlackjackMVC();
+						//blackjackWindow.blackjackFrame.setVisible(true);
+					} catch (Exception ee) {
+						System.out.println("Could not create Casino gui");
+						ee.printStackTrace();
+					}
+				if (gameName == "Slot Machine")
+					try {
+						
+						SlotMachineMVC sm = new SlotMachineMVC(myGUI.gameFrame);
 						//blackjackWindow.blackjackFrame.setVisible(true);
 					} catch (Exception ee) {
 						System.out.println("Could not create Casino gui");
