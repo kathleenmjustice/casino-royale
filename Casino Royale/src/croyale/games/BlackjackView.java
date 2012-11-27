@@ -26,15 +26,15 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
-import util.ParseString;
+//import util.ParseString;
 
 //import croyale.ImagePanel;
-import croyale.gameutil.Play;
+//import croyale.gameutil.Play;
 
 @SuppressWarnings("serial")
 public class BlackjackView extends JFrame{
 
-	private static Play currentPlay; // User's response, "Hit" or "Stand".
+	//private static Play currentPlay; // User's response, "Hit" or "Stand".
 	private JPanel m_enterBetL = new JPanel();
 	private JTextField m_betTf = new JTextField(5);
 	private JButton m_betBtn = new JButton("Bet");
@@ -208,7 +208,7 @@ public class BlackjackView extends JFrame{
 		  }
 
 		}
-	public Play getCurrentPlay(){
+	/*public Play getCurrentPlay(){
      	  ParseString parse = new ParseString();
   		  try {
   			try {
@@ -238,7 +238,7 @@ public class BlackjackView extends JFrame{
   		}
             
     	return currentPlay;
-    }
+    }*/
     public void setMoney(String newMoney){
     	System.out.println("newMoney: " + newMoney);
     	this.m_balanceTf.setText(newMoney);

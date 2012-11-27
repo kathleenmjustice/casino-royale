@@ -1,5 +1,6 @@
 package croyale;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -13,6 +14,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -24,7 +26,11 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
+import croyale.games.BlackjackMVC;
+
 public class MainGUI {
+	protected static JFrame window;
+	protected static MainGUI myGUI;
 	protected JPanel contentPane;
 	protected JTextField userIDinput, userPWinput;
 	protected JTextField r_userIDinput, r_userPWinput;
@@ -131,8 +137,9 @@ public class MainGUI {
 		loginButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				GameSession.login(userIDinput.getText(),userPWinput.getText());
-				Casinogui window = new Casinogui();
-				window.frame.setVisible(true);
+				MainGUI.drawMainScreen();
+				//Casinogui window = new Casinogui();
+				//window.frame.setVisible(true);
 			}
 		});
 		loginButton.setPreferredSize(new Dimension(150,25));
@@ -159,11 +166,11 @@ public class MainGUI {
 	public static void createAndShowGUI(){
 		
 		// Creates main program window
-		JFrame window = new JFrame("Casino Royale");
+		window = new JFrame("Casino Royale");
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		// Create and set Menu in Frame
-		MainGUI myGUI = new MainGUI();
+		myGUI = new MainGUI();
 		window.setJMenuBar(myGUI.createMenuBar());
 		
 		// Initialize main screen
@@ -174,6 +181,62 @@ public class MainGUI {
 		int windowHeight = 600;
 		window.setBounds(50, 100, windowWidth, windowHeight);
 		window.setResizable(false);
+		window.setVisible(true);
+	}
+	
+	public static void drawMainScreen(){
+		// Initialize containers
+		JLayeredPane contentPane = new JLayeredPane();
+		
+		// Set background image as panel
+		JLabel backgroundPane = new ImagePanel(new ImageIcon("src/croyale/resources/mainBackground.png").getImage());
+		backgroundPane.setOpaque(false);
+		
+		// Initialize main layout
+		JPanel gameContainer = new JPanel();
+		gameContainer.setLayout(new BorderLayout());
+		gameContainer.setOpaque(false);
+		gameContainer.setBounds(0, 200, 1000, 600);
+		
+		String[] games = {"Blackjack"};
+		JComboBox<String> gamesComboBox = new JComboBox<String>(games);
+		gamesComboBox.setSelectedItem(null);
+		gamesComboBox.setMaximumSize(gamesComboBox.getPreferredSize());
+		
+		JPanel leftPane = new JPanel();
+		leftPane.setLayout(new BoxLayout(leftPane, BoxLayout.X_AXIS));
+		leftPane.setOpaque(false);
+		
+		leftPane.add(Box.createHorizontalStrut(50));
+		leftPane.add(gamesComboBox);
+
+		gameContainer.add(leftPane,BorderLayout.LINE_START);
+		gamesComboBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JComboBox cb = (JComboBox)e.getSource();        
+				String gameName = (String)cb.getSelectedItem();
+				if (gameName == "Blackjack")
+					try {
+						
+						BlackjackMVC blackjackWindow = new BlackjackMVC();
+						//blackjackWindow.blackjackFrame.setVisible(true);
+					} catch (Exception ee) {
+						System.out.println("Could not create Casino gui");
+						ee.printStackTrace();
+					}
+			}
+		 });
+		
+		
+		contentPane.add(gameContainer,1);
+		contentPane.add(backgroundPane,2); 
+		
+		// Initialize main screen
+		window.setContentPane(contentPane);
+		int windowWidth = 1100;
+		int windowHeight = 800;
+
+		window.setBounds(50, 100, windowWidth, windowHeight);
 		window.setVisible(true);
 	}
 	
