@@ -1,5 +1,6 @@
 package croyale.security.keyagreement;
 
+import java.io.IOException;
 import java.math.BigInteger;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -10,10 +11,14 @@ import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
+import java.util.Random;
 
+import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.KeyAgreement;
 import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SealedObject;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.DHParameterSpec;
 import javax.crypto.spec.IvParameterSpec;
@@ -67,29 +72,96 @@ public class DHKeyAgreement
 	private KeyAgreement keyAgreement;
 	private SecretKey secretKey;
 	
-	public static void main(String[] args) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException
+	public static void main(String[] args)
 	{
 		DHKeyAgreement serverKeyAgree = new DHKeyAgreement();
-		DHKeyAgreement clientKeyAgree = new DHKeyAgreement();
-		
 		byte[] serverPubKeyEnc = serverKeyAgree.getPublicKeyEncoded();
+		
+		DHKeyAgreement clientKeyAgree = new DHKeyAgreement();
 		byte[] clientPubKeyEnc = clientKeyAgree.getPublicKeyEncoded();
 		
 		serverKeyAgree.generateSecretKey(clientPubKeyEnc);
 		clientKeyAgree.generateSecretKey(serverPubKeyEnc);
 		
-		System.out.println("Secret key:");
-		System.out.println(toHexString(serverKeyAgree.getSecretKey().getEncoded()));
-		System.out.println(serverKeyAgree.getSecretKey().getEncoded().length);
-		System.out.println(serverKeyAgree.getSecretKey().getAlgorithm());
+		System.out.println("Server secret key: " + toHexString(serverKeyAgree.getSecretKey().getEncoded()));
+		System.out.println("Client secret key: " + toHexString(clientKeyAgree.getSecretKey().getEncoded()));
 		
-		byte[] iv = {0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00};
-		IvParameterSpec ips = new IvParameterSpec(iv);
 		
-		Cipher c = Cipher.getInstance("AES/CBC/NoPadding");
+		// Example encryption using byte array
+		try {
+			byte[] iv = new byte[16];
+			new Random().nextBytes(iv);
+			IvParameterSpec ips = new IvParameterSpec(iv);
+			
+			Cipher server_enc_cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+			server_enc_cipher.init(Cipher.ENCRYPT_MODE, serverKeyAgree.getSecretKey(), ips);
+			
+			Cipher client_dec_cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+			client_dec_cipher.init(Cipher.DECRYPT_MODE, serverKeyAgree.getSecretKey(), ips); // must use same IV, so will need to transmit it
+			
+			byte[] plaintext = "blahblalk;2@@#$!!".getBytes();
+			byte[] ciphertext = server_enc_cipher.doFinal(plaintext);
+			byte[] decrypted = client_dec_cipher.doFinal(ciphertext);
+			
+			System.out.println("Original text:  " + toHexString(plaintext));
+			System.out.println("Decrypted text: " + toHexString(decrypted));
+		} catch (IllegalBlockSizeException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvalidKeyException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvalidAlgorithmParameterException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchPaddingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (BadPaddingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
-		System.out.println(c.getAlgorithm());
-		c.init(Cipher.ENCRYPT_MODE, serverKeyAgree.getSecretKey(), ips);
+		// Example encryption using SealedObject
+		try {
+			byte[] iv = new byte[16];
+			new Random().nextBytes(iv);
+			IvParameterSpec ips = new IvParameterSpec(iv);
+			
+			Cipher server_enc_cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+			server_enc_cipher.init(Cipher.ENCRYPT_MODE, serverKeyAgree.getSecretKey(), ips);
+			
+			String plaintext = "blahblalk;2@@#$!!";
+			SealedObject ciphertext = new SealedObject(plaintext, server_enc_cipher);
+			String decrypted = (String)ciphertext.getObject(clientKeyAgree.getSecretKey());
+			
+			System.out.println("Original text:  " + plaintext);
+			System.out.println("Decrypted text: " + decrypted);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalBlockSizeException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvalidKeyException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvalidAlgorithmParameterException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchPaddingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public DHKeyAgreement()
