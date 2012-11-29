@@ -29,6 +29,7 @@ public class ServerHost extends UnicastRemoteObject implements ServerHostInterfa
 	
 	public int checkPlayer(String user_id, String password)throws RemoteException
 	{
+		System.out.println("Calling check player method");
 		try {
 			return db.checkPlayer(user_id, password);
 		} catch (SQLException e) {
