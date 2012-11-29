@@ -10,7 +10,7 @@ public class Player {
 	String address;
 
 	public int getBalance(){
-		balance  = Database.getBalance(usrname);
+		//balance  = Database.getBalance(usrname);
 		return balance;
 	}
 }

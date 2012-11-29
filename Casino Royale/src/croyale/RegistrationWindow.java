@@ -309,8 +309,8 @@ public class RegistrationWindow extends JFrame implements ActionListener {
 		
 	}
 	private void openRegistrationWindow(){
-		MenuWindow mw = new MenuWindow(UserID);
-		mw.setVisible(true);
+		//MenuWindow mw = new MenuWindow(UserID);
+		//mw.setVisible(true);
 		//this.dispose();
 	}
 }
