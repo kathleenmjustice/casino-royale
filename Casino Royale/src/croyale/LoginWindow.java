@@ -24,6 +24,9 @@ import javax.swing.BoxLayout;
 import java.awt.Dimension;
 import javax.swing.Box;
 
+import croyale.games.BlackjackMVC;
+import croyale.games.SlotMachineMVC;
+
 
 public class LoginWindow extends JFrame implements ActionListener{
 	private int UserID;
@@ -225,7 +228,7 @@ public class LoginWindow extends JFrame implements ActionListener{
 				if (gameName == "Blackjack")
 					try {
 						
-						//BlackjackMVC blackjackWindow = new BlackjackMVC();
+						BlackjackMVC blackjackWindow = new BlackjackMVC();
 						//blackjackWindow.blackjackFrame.setVisible(true);
 					} catch (Exception ee) {
 						System.out.println("Could not create Casino gui");
@@ -234,7 +237,7 @@ public class LoginWindow extends JFrame implements ActionListener{
 				if (gameName == "Slot Machine")
 					try {
 						
-						//SlotMachineMVC sm = new SlotMachineMVC(frame.gameFrame);
+						SlotMachineMVC sm = new SlotMachineMVC(frame.gameFrame);
 						//blackjackWindow.blackjackFrame.setVisible(true);
 					} catch (Exception ee) {
 						System.out.println("Could not create Casino gui");
