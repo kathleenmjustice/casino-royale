@@ -17,61 +17,19 @@ import javax.crypto.spec.IvParameterSpec;
 public class CRCipher
 {
 	// Encrypt a Serializable object with given key into a SealedObject
-	public static SealedObject encrypt(Key key, Serializable o)
+	public static SealedObject encrypt(Key key, Serializable o) throws IllegalBlockSizeException, IOException, InvalidKeyException, InvalidAlgorithmParameterException, NoSuchAlgorithmException, NoSuchPaddingException
 	{
-		SealedObject so = null;
-		
-		try {
-			byte[] iv = new byte[16];
-			new Random().nextBytes(iv);
-			IvParameterSpec ips = new IvParameterSpec(iv);
-			Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-			cipher.init(Cipher.ENCRYPT_MODE, key, ips);
-			so = new SealedObject(o, cipher);
-		} catch (InvalidKeyException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvalidAlgorithmParameterException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NoSuchPaddingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalBlockSizeException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		return so;
+		byte[] iv = new byte[16];
+		new Random().nextBytes(iv);
+		IvParameterSpec ips = new IvParameterSpec(iv);
+		Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+		cipher.init(Cipher.ENCRYPT_MODE, key, ips);
+		return new SealedObject(o, cipher);
 	}
 	
 	// Decrypt a SealedObject encrypted with a given key into an Object
-	public static Object decrypt(Key key, SealedObject so)
+	public static Object decrypt(Key key, SealedObject so) throws InvalidKeyException, ClassNotFoundException, NoSuchAlgorithmException, IOException
 	{
-		Object o = null;
-		
-		try {
-			o = so.getObject(key);
-		} catch (InvalidKeyException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		return o;
+		return so.getObject(key);
 	}
 }
