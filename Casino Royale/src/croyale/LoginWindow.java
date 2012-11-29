@@ -26,6 +26,7 @@ import javax.swing.Box;
 
 import croyale.games.BlackjackMVC;
 import croyale.games.SlotMachineMVC;
+import croyale.rpc.ServerHostInterface;
 
 
 public class LoginWindow extends JFrame implements ActionListener{
@@ -44,14 +45,17 @@ public class LoginWindow extends JFrame implements ActionListener{
 	private Container registrationPane;
 	private JPanel gameFrame;
 	private static LoginWindow frame;
+	
+	private ServerHostInterface shi;
+	
 	/**
 	 * Launch the application.
 	 */
-	public static void init() {
+	public static void init(final ServerHostInterface shi) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					frame = new LoginWindow();
+					frame = new LoginWindow(shi);
 					frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 								
 					int windowWidth = 800;
@@ -67,7 +71,8 @@ public class LoginWindow extends JFrame implements ActionListener{
 			}
 		});
 	}
-	public LoginWindow() {
+	public LoginWindow(ServerHostInterface shi) {
+		this.shi = shi;
 		setScreen();
 	}
 	private void setScreen(){
@@ -140,21 +145,22 @@ public class LoginWindow extends JFrame implements ActionListener{
 			try{
 				//System.out.println(dbf.connectDBase());
 				//UserID = dbf.checkPlayer(UserIDBox.getText(), PasswordBox.getText());
-				//if(UserID >0){
-					//MenuWindow mw = new MenuWindow(UserID);
-					//mw.setVisible(true);
+				UserID = shi.checkPlayer(UserIDBox.getText(), PasswordBox.getText());
+				if(UserID >0){
+//					MenuWindow mw = new MenuWindow(UserID);
+//					mw.setVisible(true);
 					setGameScreen();
-				//}else{
-					//JOptionPane.showMessageDialog(null,"You are not Reigistred.","Error Message", JOptionPane.ERROR_MESSAGE);
-					//UserID=0;
-				//}
+				}else{
+					JOptionPane.showMessageDialog(null,"You are not Reigistred.","Error Message", JOptionPane.ERROR_MESSAGE);
+					UserID=0;
+				}
 			}catch(Exception e1){
 				System.out.println(e1.toString());
 			}
 			
 		}
 		else if(e.getSource() == RegistrationButton){
-			RegistrationWindow rw = new RegistrationWindow(UserID);
+			RegistrationWindow rw = new RegistrationWindow(UserID, shi);
 			rw.setVisible(true);
 			//this.dispose();
 		}

@@ -15,6 +15,8 @@ import javax.swing.border.EmptyBorder;
 
 import javax.swing.BoxLayout;
 
+import croyale.rpc.ServerHostInterface;
+
 
 public class RegistrationWindow extends JFrame implements ActionListener {
 	private JPanel contentPane;
@@ -23,7 +25,8 @@ public class RegistrationWindow extends JFrame implements ActionListener {
 	private JTextField UserIDBox,PaswordBox,FirstNameBox,LastNameBox,BalanceBox,AddressBox,PhoneBox,EmailBox;
 	private int UserID=0;
 	private JButton OkButton,CancelButton;
-	private Database dbf = new Database();
+//	private Database dbf = new Database();
+	ServerHostInterface shi;
 	
 	public RegistrationWindow() {
 		UserID=0;
@@ -32,7 +35,9 @@ public class RegistrationWindow extends JFrame implements ActionListener {
 		setWindow();
 		//fillFields();
 	}
-	public RegistrationWindow(int _id) {
+	public RegistrationWindow(int _id, ServerHostInterface shi) {
+		this.shi = shi;
+		
 		UserID = _id;
 		System.out.println("A");
 		System.out.println("UserID 11 " + UserID);
@@ -242,9 +247,10 @@ public class RegistrationWindow extends JFrame implements ActionListener {
 		System.out.println("fillFields " + UserID);
 		
 		try{
-			System.out.println(dbf.connectDBase());
+//			System.out.println(dbf.connectDBase());
 			try{
-				rs = dbf.getPlayer(UserID);
+//				rs = dbf.getPlayer(UserID);
+				rs = shi.getPlayer(UserID);
 				rs.next();
 				//FirstNameBox.setText(rs.getString(2).toString());
 				FirstNameBox.setText(rs.getString(2).trim());
@@ -257,7 +263,7 @@ public class RegistrationWindow extends JFrame implements ActionListener {
 				EmailBox.setText(rs.getString(9).trim());
 				
 			}catch(Exception e2){
-				JOptionPane.showMessageDialog(null,"You are not Reigistred.","Error Message", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null,"You are not Registered.","Error Message", JOptionPane.ERROR_MESSAGE);
 				System.out.println(e2.toString());
 			}
 			
@@ -271,12 +277,14 @@ public class RegistrationWindow extends JFrame implements ActionListener {
 		//Database dbf = new Database();
 		String msg="Your changes have been saved";
 		try{
-			System.out.println(dbf.connectDBase());
+//			System.out.println(dbf.connectDBase());
 			try{
 				System.out.println("User ID 3 "+ UserID);
-				dbf.setPlayer(UserID,FirstNameBox.getText(),LastNameBox.getText(),UserIDBox.getText(),PaswordBox.getText(),AddressBox.getText(),PhoneBox.getText(), EmailBox.getText(), BalanceBox.getText());
+//				dbf.setPlayer(UserID,FirstNameBox.getText(),LastNameBox.getText(),UserIDBox.getText(),PaswordBox.getText(),AddressBox.getText(),PhoneBox.getText(), EmailBox.getText(), BalanceBox.getText());
+				shi.setPlayer(UserID,FirstNameBox.getText(),LastNameBox.getText(),UserIDBox.getText(),PaswordBox.getText(),AddressBox.getText(),PhoneBox.getText(), EmailBox.getText(), BalanceBox.getText());
 				if(UserID == 0){
-					UserID = dbf.checkPlayer(UserIDBox.getText(),PaswordBox.getText());
+//					UserID = dbf.checkPlayer(UserIDBox.getText(),PaswordBox.getText());
+					UserID = shi.checkPlayer(UserIDBox.getText(),PaswordBox.getText());
 					msg="Your account has been set up. Please login to play the games";
 				}
 				JOptionPane.showMessageDialog(null,msg,"Casino", JOptionPane.INFORMATION_MESSAGE);

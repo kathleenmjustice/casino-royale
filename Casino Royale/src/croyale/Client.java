@@ -13,7 +13,7 @@ public class Client
 	{
 		try {
 			ServerHostInterface shi = ClientRPC.getServerInterface();
-			LoginWindow.init();
+			LoginWindow.init(shi);
 		} catch (MalformedURLException | RemoteException | NotBoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
