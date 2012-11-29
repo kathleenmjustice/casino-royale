@@ -4,6 +4,8 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 
 public class ClientRPC implements Constants
 {
@@ -13,7 +15,14 @@ public class ClientRPC implements Constants
 	{
 		if( shi == null )
 		{
-			shi = (ServerHostInterface)Naming.lookup(SERVER_NAME);
+			//shi = (ServerHostInterface)Naming.lookup("//10.219.111.136:2020/ITLAPTOP");
+			
+			Registry registry = LocateRegistry.getRegistry("10.219.111.136", 2020);
+//			shi = (ServerHostInterface)registry.lookup("rmi://" + "10.219.111.136:2020" + "/CasinoRoyaleServer");
+			
+			shi = (ServerHostInterface)registry.lookup(SERVER_NAME);
+			
+			shi.checkPlayer("michael", "password");
 		}
 		
 		return shi;
