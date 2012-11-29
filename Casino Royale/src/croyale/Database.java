@@ -7,6 +7,13 @@ public class Database {
     
 	public Database(){
 	}
+	public Database(String _connectString){
+		try{
+			connectDBase();
+		}catch(Exception e){
+			System.out.println("Error " + e.toString());
+		}
+	}
 	public String connectDBase() throws ClassNotFoundException, SQLException{
 		Class.forName("sun.jdbc.odbc.JdbcOdbcDriver"); 
 		conn = DriverManager.getConnection("jdbc:odbc:CN1","teamLogin","atl1929");
