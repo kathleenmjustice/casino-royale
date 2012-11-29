@@ -16,6 +16,8 @@ public class ServerHost extends UnicastRemoteObject implements ServerHostInterfa
 	{
 		double ret = 0;
 		
+		System.out.println("Called get user balance method");
+		
 		return ret;
 	}
 }
