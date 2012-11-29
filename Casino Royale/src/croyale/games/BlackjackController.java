@@ -3,7 +3,7 @@ package croyale.games;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import croyale.gameutil.Play;
+//import croyale.gameutil.Play;
 
 
 public class BlackjackController {
@@ -23,9 +23,9 @@ public class BlackjackController {
 	private class PlayListener implements ActionListener {
 		public void actionPerformed(ActionEvent e){
 			try {
-				Play currentPlay = BlackjackController.this.m_view.getCurrentPlay();
+				//Play currentPlay = BlackjackController.this.m_view.getCurrentPlay();
 				
-				BlackjackController.this.m_view.setMoney(BlackjackController.this.m_model.getMoney());
+				//BlackjackController.this.m_view.setMoney(BlackjackController.this.m_model.getMoney());
 			}
 			catch(Exception e2){
 				;
