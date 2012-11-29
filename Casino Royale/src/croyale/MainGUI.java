@@ -198,7 +198,7 @@ public class MainGUI {
 		JPanel gameContainer = new JPanel();
 		gameContainer.setLayout(new BorderLayout());
 		gameContainer.setOpaque(false);
-		gameContainer.setBounds(0, 200, 1000, 600);
+		gameContainer.setBounds(0, 150, 1000, 500);
 		
 		String[] games = {"Blackjack","Slot Machine"};
 		JComboBox<String> gamesComboBox = new JComboBox<String>(games);
