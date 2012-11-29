@@ -1,41 +1,77 @@
 package croyale;
 
-public class Database {
-	public static final boolean SUCCESS = false;
-	public static final boolean FAILURE = true;
+import java.sql.*;
 
-	public static boolean createAccount(String name, String usrname, String pwd){
-		
-		return SUCCESS;
+public class Database {
+	Connection conn;
+    
+	public Database(){
 	}
-	
-	public static boolean doesExist(String usrname){
-		
-		return false;
+	public String connectDBase() throws ClassNotFoundException, SQLException{
+		Class.forName("sun.jdbc.odbc.JdbcOdbcDriver"); 
+		conn = DriverManager.getConnection("jdbc:odbc:CN1","teamLogin","atl1929");
+		return "Database Connected 11";
 	}
-	
-	public static boolean updateAddress(String usrname, String address){
+	public int checkPlayer(String _userid,String _password)throws SQLException{
+		java.sql.ResultSet rs = null;
+		int id;
+		CallableStatement cmst = conn.prepareCall("{call checkPlayer(?,?)}");
+		cmst.setString(1,_userid);
+		cmst.setString(2,_password);
+		cmst.execute();
 		
-		return SUCCESS;
+		rs = cmst.getResultSet();
+		try{
+			rs.next();
+			id = rs.getInt(1);
+		}catch (Exception e1){
+			id=0;
+		}
+		return id;
 	}
-	
-	public static boolean updateBalance(String usrname, int balance){
-		
-		return SUCCESS;
+	public java.sql.ResultSet getPlayer(int _id)throws SQLException{
+		CallableStatement cmst = conn.prepareCall("{call getPlayer(?)}");
+		cmst.setInt(1,_id);
+		cmst.execute();
+		return cmst.getResultSet();
 	}
-	
-	public static boolean updatePhone(String usrname, String phone){
+	public void setPlayer(int _id,String _firstname,String _lastname,String _userid,String _password,String _address,String _phone,String _email,String _balance)throws SQLException{
+		CallableStatement cmst = conn.prepareCall("{call setPlayer(?,?,?,?,?,?,?,?,?)}");
+		cmst.setInt(1,_id);
+		cmst.setString(2,_firstname);
+		cmst.setString(3,_lastname);
+		cmst.setString(4,_userid);
+		cmst.setString(5,_password);
+		cmst.setString(6,_address);
+		cmst.setString(7,_phone);
+		cmst.setString(8,_email);
+		cmst.setString(9,_balance);
+		cmst.execute();
 		
-		return SUCCESS;
 	}
-	
-	public static boolean updateEmail(String usrname, String email){
+	public double getBalance(int _userid)throws SQLException{
+		java.sql.ResultSet rs = null;
+		double balance;
+		CallableStatement cmst = conn.prepareCall("{call getBalance(?)}");
+		cmst.setInt(1,_userid);
+		cmst.execute();
 		
-		return SUCCESS;
+		rs = cmst.getResultSet();
+		try{
+			rs.next();
+			balance = rs.getInt(1);
+		}catch (Exception e1){
+			balance=0;
+		}
+		return balance;
 	}
-	
-	public static int getBalance(String usrname){
+	public void setBalance(int _userid,String _balance)throws SQLException{
+		CallableStatement cmst = conn.prepareCall("{call setBalance(?,?)}");
+		cmst.setInt(1,_userid);
+		cmst.setString(2,_balance);
+		cmst.execute();
 		
-		return 0;
+		
 	}
 }
+
