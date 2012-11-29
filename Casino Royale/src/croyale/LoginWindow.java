@@ -133,18 +133,18 @@ public class LoginWindow extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e){
 		if(e.getSource() == OkButton){
 			System.out.println("here");
-			Database dbf = new Database();
+			//Database dbf = new Database();
 			try{
-				System.out.println(dbf.connectDBase());
-				UserID = dbf.checkPlayer(UserIDBox.getText(), PasswordBox.getText());
-				if(UserID >0){
+				//System.out.println(dbf.connectDBase());
+				//UserID = dbf.checkPlayer(UserIDBox.getText(), PasswordBox.getText());
+				//if(UserID >0){
 					//MenuWindow mw = new MenuWindow(UserID);
 					//mw.setVisible(true);
 					setGameScreen();
-				}else{
-					JOptionPane.showMessageDialog(null,"You are not Reigistred.","Error Message", JOptionPane.ERROR_MESSAGE);
-					UserID=0;
-				}
+				//}else{
+					//JOptionPane.showMessageDialog(null,"You are not Reigistred.","Error Message", JOptionPane.ERROR_MESSAGE);
+					//UserID=0;
+				//}
 			}catch(Exception e1){
 				System.out.println(e1.toString());
 			}
