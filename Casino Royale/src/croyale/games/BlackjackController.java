@@ -3,32 +3,48 @@ package croyale.games;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
+
 //import croyale.gameutil.Play;
 
 
 public class BlackjackController {
-	private BlackjackModel m_model;
-	private BlackjackView m_view;
+	private BlackjackModel model;
+	private BlackjackView view;
 	
-	public BlackjackController(BlackjackModel model, BlackjackView view){ 
-		this.m_model = model;
-		this.m_view = view;
-		System.out.println("money: " + this.m_model.getMoney());
-		this.m_view.setMoney(this.m_model.getMoney());
+	public BlackjackController(BlackjackModel m, BlackjackView v){ 
+		model = m;
+		view = v;
+		view.setMoney(model.getMoney());
 		
 		view.addPlayListener(new PlayListener());
 		view.addBetListener(new BetListener());
+		
+		view.displayCards(model.deal());
 	}
 	
 	private class PlayListener implements ActionListener {
 		public void actionPerformed(ActionEvent e){
 			try {
+				String source = ((JButton)e.getSource()).getText();
+				if (source == "Hit!"){
+					model.hit();
+					view.drawLose();
+				}
+				else if (source == "Stand!"){
+					model.stand();
+					view.drawWin();
+				}
+				else if (source == "New Game?"){
+					view.reset();
+					view.displayCards(model.deal());
+				}
 				//Play currentPlay = BlackjackController.this.m_view.getCurrentPlay();
 				
 				//BlackjackController.this.m_view.setMoney(BlackjackController.this.m_model.getMoney());
 			}
-			catch(Exception e2){
-				;
+			catch(Exception ee){
+				ee.printStackTrace();
 			}
 		}
 	}
@@ -36,10 +52,10 @@ public class BlackjackController {
 		public void actionPerformed(ActionEvent e){
 			int bet;
 			try {
-				bet = BlackjackController.this.m_view.getBet();
+				bet = BlackjackController.this.view.getBet();
 			}
-			catch(Exception e2){
-				;
+			catch(Exception ee){
+				ee.printStackTrace();
 			}
 		}
 	}

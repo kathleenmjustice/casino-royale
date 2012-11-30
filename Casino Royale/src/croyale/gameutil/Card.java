@@ -1,9 +1,14 @@
 package croyale.gameutil;
+
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 /*
    An object of class card represents one of the 52 cards in a
    standard deck of playing cards.  Each card has a suit and
    a value.
 */
+
+import croyale.util.ImagePanel;
 
 
 public class Card {
@@ -79,6 +84,11 @@ public class Card {
            // Return a String representation of this card, such as
            // "10 of Hearts" or "Queen of Spades".
         return getValueAsString() + " of " + getSuitAsString();
+    }
+    
+    public JLabel getImage() {
+    	Integer card = new Integer(value*4+suit-3);
+    	return new ImagePanel(new ImageIcon("src/croyale/resources/deck/" + card + ".png").getImage());
     }
 
 

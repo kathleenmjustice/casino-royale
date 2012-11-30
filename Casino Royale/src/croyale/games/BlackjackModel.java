@@ -10,22 +10,85 @@ import croyale.gameutil.BlackjackHand;
 import croyale.gameutil.Card;
 import croyale.gameutil.Deck;
 //import croyale.gameutil.Play;
+import croyale.gameutil.Hand;
 
 public class BlackjackModel {
+	
 	private static final String INITIAL_VALUE = "100";
-	private BigInteger m_money;
+	private BigInteger money;
+	
 	public BlackjackModel() {
-		this.reset();
+		reset();
 	}
+	
 	public void reset() {
-		this.m_money = new BigInteger(INITIAL_VALUE);
+		money = new BigInteger(INITIAL_VALUE);
 	}
-    public String getMoney(){
-    	return this.m_money.toString();
+   
+	public String getMoney(){
+    	return money.toString();
     }
-    public void setMoney(String value){
-    	this.m_money = new BigInteger(value);
+    
+	public void setMoney(String value){
+    	money = new BigInteger(value);
     }
+	
+	public void hit(){
+		
+	}
+	
+	public void stand(){
+		
+	}
+	
+	public Hand[] deal(){
+		 Deck deck;                  // A deck of cards.  A new deck for each game.
+	      BlackjackHand dealerHand;   // The dealer's hand.
+	      BlackjackHand userHand;     // The user's hand.
+	      
+	      deck = new Deck();
+	      dealerHand = new BlackjackHand();
+	      userHand = new BlackjackHand();
+
+	      //  Shuffle the deck, then deal two cards to each player. 
+	      
+	      deck.shuffle();
+	      dealerHand.addCard( deck.dealCard() );
+	      dealerHand.addCard( deck.dealCard() );
+	      userHand.addCard( deck.dealCard() );
+	      userHand.addCard( deck.dealCard() );
+	      
+	      
+	      // Check if one of the players has Blackjack (two cards totaling to 21).
+	      //   The player with Blackjack wins the game.  Dealer wins ties.
+	      
+	      
+	      if (dealerHand.getBlackjackValue() == 21) {
+	           System.out.println("Dealer has the " + dealerHand.getCard(0)
+	                                   + " and the " + dealerHand.getCard(1) + ".");
+	           System.out.println("User has the " + userHand.getCard(0)
+	                                     + " and the " + userHand.getCard(1) + ".");
+	           System.out.println();
+	           System.out.println("Dealer has Blackjack.  Dealer wins.");
+	      }
+	      
+	      if (userHand.getBlackjackValue() == 21) {
+	           System.out.println("Dealer has the " + dealerHand.getCard(0)
+	                                   + " and the " + dealerHand.getCard(1) + ".");
+	           System.out.println("User has the " + userHand.getCard(0)
+	                                     + " and the " + userHand.getCard(1) + ".");
+	           System.out.println();
+	           System.out.println("You have Blackjack.  You win.");
+	      }
+	      
+	      //  If neither player has Blackjack, play the game.  First the user 
+	      //    gets a chance to draw cards (i.e., to "Hit").  The while loop ends 
+	      //    when the user chooses to "Stand".  If the user goes over 21,
+	      //    the user loses immediately.
+	      Hand hands[] = {userHand,dealerHand};
+	      return hands;
+	     }
+	}
 	/*public void wager(){   
   //      int money;          // Amount of money the user has.
         int bet;            // Amount user bets on a game.
@@ -171,4 +234,4 @@ public class BlackjackModel {
 
    }  // end playBlackjack()
 */
-}
+
