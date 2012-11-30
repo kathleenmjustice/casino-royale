@@ -15,7 +15,14 @@ public class Server
 		try {
 			registry = LocateRegistry.createRegistry(2020);
 		} catch (RemoteException e1) {
+			// TODO Auto-generated catch block
 			e1.printStackTrace();
+			try {
+				registry = LocateRegistry.getRegistry(2020);
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 		try {
