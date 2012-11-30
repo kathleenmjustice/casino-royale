@@ -17,7 +17,7 @@ public class ClientRPC implements Constants
 		{
 			//shi = (ServerHostInterface)Naming.lookup("//10.219.111.136:2020/ITLAPTOP");
 			
-			Registry registry = LocateRegistry.getRegistry("10.219.111.136", 2020);
+			Registry registry = LocateRegistry.getRegistry("76.241.64.118", 2020);
 //			shi = (ServerHostInterface)registry.lookup("rmi://" + "10.219.111.136:2020" + "/CasinoRoyaleServer");
 			
 			shi = (ServerHostInterface)registry.lookup(SERVER_NAME);
