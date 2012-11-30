@@ -1,14 +1,12 @@
 package croyale.games;
 
-import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 public class BlackjackMVC {
-	private JFrame blackjackFrame;
-	public BlackjackMVC(){
+	public BlackjackMVC(JPanel panel){
 		BlackjackModel model = new BlackjackModel();
-		BlackjackView view = new BlackjackView(blackjackFrame);
+		BlackjackView view = new BlackjackView(panel);
 		BlackjackController controller = new BlackjackController(model,view);
 	
-		view.setVisible(true);
 	}
 }

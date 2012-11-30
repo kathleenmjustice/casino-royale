@@ -1,13 +1,20 @@
 package croyale.games;
 
+
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class SlotMachineMVC {
+public class SlotMachineMVC extends JFrame
+{
+	
+	public SlotMachineMVC(JPanel panel){
+		System.out.println("MVC");
 
-	public SlotMachineMVC(JPanel mainFrame){
 		SlotMachineModel model = new SlotMachineModel();
-		SlotMachineView view = new SlotMachineView(mainFrame);
+		SlotMachineView view = new SlotMachineView(panel);
 		SlotMachineController controller = new SlotMachineController(model,view);
+
+		view.setVisible(true);
 	}
 	
 }

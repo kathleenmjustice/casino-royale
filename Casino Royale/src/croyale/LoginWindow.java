@@ -27,6 +27,8 @@ import javax.swing.Box;
 import croyale.games.BlackjackMVC;
 import croyale.games.SlotMachineMVC;
 import croyale.rpc.ServerHostInterface;
+import croyale.util.ImageButton;
+import croyale.util.ImagePanel;
 
 
 public class LoginWindow extends JFrame implements ActionListener{
@@ -43,7 +45,7 @@ public class LoginWindow extends JFrame implements ActionListener{
 	private JPanel formContainer;
 	private JLayeredPane contentPane2;
 	private Container registrationPane;
-	private JPanel gameFrame;
+	private JPanel gameContainer;
 	private static LoginWindow frame;
 	
 	private ServerHostInterface shi;
@@ -58,8 +60,28 @@ public class LoginWindow extends JFrame implements ActionListener{
 					frame = new LoginWindow(shi);
 					frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 								
-					int windowWidth = 800;
-					int windowHeight = 600;
+					int windowWidth = 1280;
+					int windowHeight = 800;
+					frame.setBounds(50, 100, windowWidth, windowHeight);
+					frame.setResizable(false);
+								
+					
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+	public static void init() {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					frame = new LoginWindow();
+					frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+								
+					int windowWidth = 1280;
+					int windowHeight = 750;
 					frame.setBounds(50, 100, windowWidth, windowHeight);
 					frame.setResizable(false);
 								
@@ -75,13 +97,16 @@ public class LoginWindow extends JFrame implements ActionListener{
 		this.shi = shi;
 		setScreen();
 	}
+	public LoginWindow() {
+		setScreen();
+	}
 	private void setScreen(){
 		//Container loginPane = new JPanel();
 		
 		JLayeredPane loginPane = new JLayeredPane();
 		//loginPane.setBackground(new java.awt.Color(0,176,80));
 		
-		JLabel backgroundPane = new ImagePanel(new ImageIcon("src/croyale/resources/mainBackground.png").getImage());
+		JLabel backgroundPane = new ImagePanel(new ImageIcon("src/croyale/resources/casinobackground1.jpeg").getImage());
 		backgroundPane.setOpaque(false);
 		
 		JPanel registerForm = new JPanel();
@@ -133,10 +158,11 @@ public class LoginWindow extends JFrame implements ActionListener{
 		registerForm.add(RegisterButton);
 		//registerForm.add(Box.createVerticalStrut(20));
 		loginPane.add(registerForm,1);
+		registerForm.setBounds(500,200,300,200);
 		loginPane.add(backgroundPane,2);
-		
-		this.add(loginPane);
-		
+
+		this.setContentPane(loginPane);
+		this.setVisible(true);
 	}
 	public void actionPerformed(ActionEvent e){
 		if(e.getSource() == OkButton){
@@ -145,16 +171,16 @@ public class LoginWindow extends JFrame implements ActionListener{
 			try{
 				//System.out.println(dbf.connectDBase());
 				//UserID = dbf.checkPlayer(UserIDBox.getText(), PasswordBox.getText());
-				UserID = shi.checkPlayer(UserIDBox.getText(), PasswordBox.getText());
-				if(UserID >0){
+			//	UserID = shi.checkPlayer(UserIDBox.getText(), PasswordBox.getText());
+		//		if(UserID >0){
 //					MenuWindow mw = new MenuWindow(UserID);
 //					mw.setVisible(true);
 					setGameScreen();
-				}else{
-					JOptionPane.showMessageDialog(null,"You are not Reigistred.","Error Message", JOptionPane.ERROR_MESSAGE);
-					UserID=0;
+		//		}else{
+			//		JOptionPane.showMessageDialog(null,"You are not Reigistred.","Error Message", JOptionPane.ERROR_MESSAGE);
+				//	UserID=0;
 				}
-			}catch(Exception e1){
+			catch(Exception e1){
 				System.out.println(e1.toString());
 			}
 			
@@ -171,124 +197,138 @@ public class LoginWindow extends JFrame implements ActionListener{
 
 	}
 	private void setGameScreen(){
-		JLayeredPane contentPane = new JLayeredPane();
-		
-		// Set background image as panel
-		JLabel backgroundPane = new ImagePanel(new ImageIcon("src/croyale/resources/mainBackground.png").getImage());
-		backgroundPane.setOpaque(false);
+		// Set background image
+		JLabel contentPane = new ImagePanel(new ImageIcon("src/croyale/resources/casinobackground3.jpeg").getImage());
 		
 		// Initialize main layout
-		JPanel gameContainer = new JPanel();
-		gameContainer.setLayout(new BorderLayout());
-		gameContainer.setOpaque(false);
-		gameContainer.setBounds(0, 200, 1000, 600);
-		
-		String[] games = {"Blackjack","Slot Machine"};
-		JComboBox<String> gamesComboBox = new JComboBox<String>(games);
-		gamesComboBox.setSelectedItem(null);
-		gamesComboBox.setMaximumSize(gamesComboBox.getPreferredSize());
-		
-		JPanel gamesComboBoxPane = new JPanel();
-		gamesComboBoxPane.setLayout(new BoxLayout(gamesComboBoxPane, BoxLayout.X_AXIS));
-		gamesComboBoxPane.setOpaque(false);
-		
-		gamesComboBoxPane.add(Box.createHorizontalStrut(50));
-		gamesComboBoxPane.add(gamesComboBox);
-		gamesComboBoxPane.add(Box.createHorizontalStrut(75));
-		gamesComboBoxPane.setMaximumSize(gamesComboBoxPane.getPreferredSize());
-
+		contentPane.setLayout(new BoxLayout(contentPane,BoxLayout.X_AXIS));
 		JPanel leftPane = new JPanel();
+		gameContainer = new JPanel();
+		JPanel rightPane = new JPanel();
+		
+		// Set up Left Pane (player information)
 		leftPane.setLayout(new BoxLayout(leftPane, BoxLayout.Y_AXIS));
 		leftPane.setOpaque(false);
 		
-		leftPane.add(Box.createVerticalStrut(100));
-		leftPane.add(gamesComboBoxPane);
-		leftPane.add(Box.createVerticalStrut(50));
+		JPanel leftPaneBottom = new JPanel();
+		leftPaneBottom.setLayout(new BoxLayout(leftPaneBottom, BoxLayout.X_AXIS));
+		leftPaneBottom.setOpaque(false);
+		
+		JPanel accountInfoBox = new JPanel();
+		accountInfoBox.setLayout(new BoxLayout(accountInfoBox, BoxLayout.Y_AXIS));
+		accountInfoBox.setBackground(new Color(0,176,80));
+		accountInfoBox.setMaximumSize(new Dimension(190,150));
+		accountInfoBox.setOpaque(true);
+		
+		JLabel accountInfoBoxTitle = new JLabel("Account Info");
+		accountInfoBox.add(accountInfoBoxTitle);
+		JLabel nameText = new JLabel("Name:");
+		accountInfoBox.add(nameText);
+		JLabel balanceText = new JLabel("Balance:");
+		accountInfoBox.add(balanceText);
+		accountInfoBox.add(Box.createVerticalGlue());
+		
+		JPanel updateBox = new JPanel();
+		updateBox.setLayout(new BoxLayout(updateBox,BoxLayout.X_AXIS));
+		updateBox.setOpaque(false);
+		JButton updateButton = new JButton("Update Info...");
+		updateBox.add(Box.createHorizontalStrut(20));
+		updateBox.add(updateButton);
+		accountInfoBox.add(updateBox);
+		accountInfoBox.add(Box.createVerticalStrut(20));
+		
+		JPanel logoutBox = new JPanel();
+		logoutBox.setLayout(new BoxLayout(logoutBox,BoxLayout.X_AXIS));
+		logoutBox.setOpaque(false);
+		JButton logoutButton = new JButton("Log Off");
+		logoutBox.add(Box.createHorizontalStrut(20));
+		logoutBox.add(logoutButton);
+		accountInfoBox.add(logoutBox);
+		accountInfoBox.add(Box.createVerticalStrut(20));
 
-		// Create Player Info frame
-		JPanel playerInfo = new JPanel();
-		playerInfo.setLayout(new BoxLayout(playerInfo, BoxLayout.Y_AXIS));
-		JLabel playerInfoTitle = new JLabel("Player Account");
-		playerInfo.setBackground(Color.RED);
-		playerInfo.add(playerInfoTitle);
-		RegistrationButton = new JButton("Registration");
-		playerInfo.add(RegistrationButton);
-		RegistrationButton.addActionListener(this);
+		leftPaneBottom.add(Box.createHorizontalStrut(10));
+		leftPaneBottom.add(accountInfoBox);
+		leftPaneBottom.add(Box.createHorizontalStrut(20));
+
+		leftPane.add(Box.createVerticalStrut(450));
+		leftPane.add(Box.createHorizontalStrut(212));
+		leftPane.add(leftPaneBottom);
+		leftPane.add(Box.createVerticalStrut(10));
 		
-		playerInfo.setMaximumSize(playerInfo.getPreferredSize());
+		// Set up middle Pane (game Container)
+		gameContainer.setLayout(new BorderLayout());
+		gameContainer.setOpaque(true);
 		
-		leftPane.add(playerInfo);
-		leftPane.add(playerInfoTitle);
-	
+		// Set up Right Pane (game selection)
+		rightPane.setLayout(new BoxLayout(rightPane, BoxLayout.Y_AXIS));
+		rightPane.setOpaque(false);
 		
-		gameFrame = new JPanel();
-		gameContainer.add(leftPane,BorderLayout.LINE_START);
-		gameContainer.add(gameFrame,BorderLayout.CENTER);
-		
+		JButton blackjackButton = new ImageButton(new ImageIcon("src/croyale/resources/blackjackbutton.jpg").getImage());
+		JButton slotmachineButton = new ImageButton(new ImageIcon("src/croyale/resources/slotmachinebutton.jpg").getImage());
 		
 		
-		gamesComboBox.addActionListener(new ActionListener() {
+		rightPane.add(Box.createHorizontalStrut(43));
+		rightPane.add(Box.createVerticalStrut(15));
+		rightPane.add(Box.createVerticalGlue());
+		rightPane.add(blackjackButton);
+		rightPane.add(Box.createVerticalStrut(15));
+		rightPane.add(slotmachineButton);
+		rightPane.add(Box.createVerticalStrut(600));
+				
+		contentPane.add(leftPane);
+		contentPane.add(gameContainer);
+		contentPane.add(rightPane);
+		contentPane.add(Box.createHorizontalStrut(15));
+		
+		// Add actionListeners to buttons
+		blackjackButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JComboBox cb = (JComboBox)e.getSource();        
-				String gameName = (String)cb.getSelectedItem();
-				if (gameName == "Blackjack")
-					try {
-						
-						BlackjackMVC blackjackWindow = new BlackjackMVC();
-						//blackjackWindow.blackjackFrame.setVisible(true);
-					} catch (Exception ee) {
-						System.out.println("Could not create Casino gui");
-						ee.printStackTrace();
-					}
-				if (gameName == "Slot Machine")
-					try {
-						
-						SlotMachineMVC sm = new SlotMachineMVC(frame.gameFrame);
-						//blackjackWindow.blackjackFrame.setVisible(true);
-					} catch (Exception ee) {
-						System.out.println("Could not create Casino gui");
-						ee.printStackTrace();
-					}
+				try {
+					System.out.println("Height is: " + frame.gameContainer.getHeight() );
+					System.out.println("Width is:" + frame.gameContainer.getWidth());
+					BlackjackMVC blackjackWindow = new BlackjackMVC(frame.gameContainer);
+				} 
+				catch (Exception ee) {
+					System.out.println("Could not create Casino gui");
+					ee.printStackTrace();
+				}
+			}
+		 });
+		slotmachineButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					SlotMachineMVC sm = new SlotMachineMVC(frame.gameContainer);
+				} 
+				catch (Exception ee) {
+					System.out.println("Could not create Casino gui");
+					ee.printStackTrace();
+				}
+			}
+		 });
+		logoutButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					setScreen();
+				} 
+				catch (Exception ee) {
+					ee.printStackTrace();
+				}
+			}
+		 });
+		updateButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					RegistrationWindow rw = new RegistrationWindow();
+					rw.setVisible(true);
+				} 
+				catch (Exception ee) {
+					ee.printStackTrace();
+				}
 			}
 		 });
 		
-		
-		contentPane.add(gameContainer,1);
-		contentPane.add(backgroundPane,2); 
-		
-		// Initialize main screen
 		frame.setContentPane(contentPane);
-		int windowWidth = 1100;
-		int windowHeight = 800;
 
-		frame.setBounds(50, 100, windowWidth, windowHeight);
 		frame.setVisible(true);
 	}
 }
-
-
-class ImagePanel extends JLabel {
-
-	  private java.awt.Image img;
-	  {setOpaque(false);} 
-
-	  public ImagePanel(String img) {
-	    this(new ImageIcon(img).getImage());
-	  }
-
-	  public ImagePanel(Image img) {
-	    this.img = img;
-	    Dimension size = new Dimension(img.getWidth(null), img.getHeight(null));
-	    setPreferredSize(size);
-	    setMinimumSize(size);
-	    setMaximumSize(size);
-	    setSize(size);
-	    setLayout(null);
-	  }
-
-	  public void paintComponent(Graphics g) {
-	    g.drawImage(img, 0, 0, null);
-	    super.paintComponent(g);
-	  }
-
-	}

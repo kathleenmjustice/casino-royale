@@ -1,8 +1,6 @@
 package croyale.gameutil;
 import javax.swing.*;
 
-import croyale.Casinogui;
-
 public class Blackjack{
     public void wager(){   
           int money;          // Amount of money the user has.
