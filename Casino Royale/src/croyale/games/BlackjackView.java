@@ -56,7 +56,7 @@ public class BlackjackView{
 		
 		// Set background image as panel
 		//JLabel backgroundPane = new ImagePanel(new ImageIcon("src/croyale/resources/BlackjackTable.png").getImage());
-		backgroundPane = new ImagePanel(new ImageIcon("src/croyale/resources/BlackjackTable.png").getImage());
+		backgroundPane = new ImagePanel(new ImageIcon("src/croyale/resources/blackjack.jpg").getImage());
 		backgroundPane.setOpaque(false);
 
 		//Layout the components.
@@ -107,7 +107,7 @@ public class BlackjackView{
 		
 		
 		mainPane.setPreferredSize(new Dimension(800,1000));
-		mainPane.add(formContainer,1);
+		//mainPane.add(formContainer,1);
 		mainPane.add(backgroundPane,2);
 		contentPane.add(mainPane);
 		backgroundPane.setBounds(50,0,600,800);
