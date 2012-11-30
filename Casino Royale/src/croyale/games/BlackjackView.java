@@ -26,13 +26,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
-//import util.ParseString;
-
-//import croyale.ImagePanel;
-//import croyale.gameutil.Play;
-
-@SuppressWarnings("serial")
-public class BlackjackView extends JFrame{
+public class BlackjackView{
 
 	//private static Play currentPlay; // User's response, "Hit" or "Stand".
 	private JPanel m_enterBetL = new JPanel();
@@ -45,88 +39,18 @@ public class BlackjackView extends JFrame{
 	private JTextField m_balanceTf = new JTextField(20);
 	private JTextArea m_outputTa = new JTextArea(40, 40);
 	private JLabel backgroundPane = new ImagePanel(new ImageIcon("src/croyale/resources/BlackjackTable.png").getImage());
+	private JPanel contentPane;
 
-	BlackjackView(JFrame frame){
-		// Creates main program window
-		this.setTitle("Blackjack");
-
-		// Create and set Menu in Frame
-		BlackjackView myGUI = new BlackjackView();
-		this.setJMenuBar(myGUI.createMenuBar());
-
-		// Initialize main screen
-		this.setContentPane(myGUI.drawWelcomeScreen(this.getContentPane()));
-		this.pack();
-		
-		// Display main program window
-		int windowWidth = 800;
-		int windowHeight = 600;
-		this.setBounds(50, 100, windowWidth, windowHeight);
-		this.setResizable(false);
-	}
-	BlackjackView(){
-	}
-	protected JPanel contentPane;
-
-	JFrame blackjackFrame;
-	
-	protected static JFrame registerWindow;
-	
-	public JMenuBar createMenuBar(){
-		
-		// Declare all used menu parts
-		JMenuBar menuBar;
-		JMenu menu;
-		JMenuItem menuItem;
-		
-		// Create Menu Bar
-		menuBar = new JMenuBar();
-		
-		// Build 'File' Menu
-		menu = new JMenu("File");
-		menu.setMnemonic(KeyEvent.VK_F);
-		menuBar.add(menu);
-		
-		// Create and add items to 'File' Menu
-		
-		// 'Exit' item
-		menuItem = new JMenuItem("Exit", KeyEvent.VK_X);
-		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F4, ActionEvent.ALT_MASK));
-		menuItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e){
-				System.exit(0);
-			}
-		});
-		menu.add(menuItem);
-		
-		// Build 'Help' Menu
-		menu = new JMenu("Help");
-		menu.setMnemonic(KeyEvent.VK_H);
-		menuBar.add(menu);
-		
-		// 'About...' item
-		menuItem = new JMenuItem("About...", KeyEvent.VK_A);
-		menuItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e){
-				JOptionPane.showMessageDialog(contentPane,
-						"Created by Team Royale\n\u00a9 2012", 
-						"About XYZ Casino",
-						JOptionPane.INFORMATION_MESSAGE);
-			}
-		});
-		menu.add(menuItem);
-		
-		return menuBar;
+	BlackjackView(JPanel gamePane){
+	 contentPane = gamePane;
+	 drawGameScreen();
 	}
 
-	public Container drawWelcomeScreen(Container pane){
+	public void drawGameScreen(){
 
-		//Initialize components
-		this.m_balanceTf.setEditable(false);
-		this.m_outputTa.setEditable(false);
-		
 		// Initialize containers
-		JLayeredPane contentPane = new JLayeredPane();
+		contentPane.removeAll();
+		JLayeredPane mainPane = new JLayeredPane();
 		
 		// Set background image as panel
 		//JLabel backgroundPane = new ImagePanel(new ImageIcon("src/croyale/resources/BlackjackTable.png").getImage());
@@ -177,9 +101,10 @@ public class BlackjackView extends JFrame{
 		
 		formContainer.add(this.m_outputTa);
 		
-		contentPane.add(formContainer,1);
-		contentPane.add(backgroundPane,2);
-		return contentPane;
+		//mainPane.add(formContainer,1);
+		//mainPane.add(backgroundPane,2);
+		contentPane.add(formContainer);
+		contentPane.revalidate();
 	}
 	
 	private class ImagePanel extends JLabel {

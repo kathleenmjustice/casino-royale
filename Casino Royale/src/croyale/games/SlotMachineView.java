@@ -16,7 +16,8 @@ public class SlotMachineView extends JPanel
 		panel.removeAll();
 		button1 = new JButton("Hello Casino");
 		panel.add(button1);
-		panel.setVisible(true);
+		panel.revalidate();
+		panel.repaint();
 				
 		System.out.println("Panel should be updated");
 	

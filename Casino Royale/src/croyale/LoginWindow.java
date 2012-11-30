@@ -71,8 +71,31 @@ public class LoginWindow extends JFrame implements ActionListener{
 			}
 		});
 	}
+	public static void init() {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					frame = new LoginWindow();
+					frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+								
+					int windowWidth = 800;
+					int windowHeight = 600;
+					frame.setBounds(50, 100, windowWidth, windowHeight);
+					frame.setResizable(false);
+								
+					
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
 	public LoginWindow(ServerHostInterface shi) {
 		this.shi = shi;
+		setScreen();
+	}
+	public LoginWindow() {
 		setScreen();
 	}
 	private void setScreen(){
@@ -145,16 +168,16 @@ public class LoginWindow extends JFrame implements ActionListener{
 			try{
 				//System.out.println(dbf.connectDBase());
 				//UserID = dbf.checkPlayer(UserIDBox.getText(), PasswordBox.getText());
-				UserID = shi.checkPlayer(UserIDBox.getText(), PasswordBox.getText());
-				if(UserID >0){
+			//	UserID = shi.checkPlayer(UserIDBox.getText(), PasswordBox.getText());
+		//		if(UserID >0){
 //					MenuWindow mw = new MenuWindow(UserID);
 //					mw.setVisible(true);
 					setGameScreen();
-				}else{
-					JOptionPane.showMessageDialog(null,"You are not Reigistred.","Error Message", JOptionPane.ERROR_MESSAGE);
-					UserID=0;
+		//		}else{
+			//		JOptionPane.showMessageDialog(null,"You are not Reigistred.","Error Message", JOptionPane.ERROR_MESSAGE);
+				//	UserID=0;
 				}
-			}catch(Exception e1){
+			catch(Exception e1){
 				System.out.println(e1.toString());
 			}
 			
@@ -234,7 +257,7 @@ public class LoginWindow extends JFrame implements ActionListener{
 				if (gameName == "Blackjack")
 					try {
 						
-						BlackjackMVC blackjackWindow = new BlackjackMVC();
+						BlackjackMVC blackjackWindow = new BlackjackMVC(frame.gameFrame);
 						//blackjackWindow.blackjackFrame.setVisible(true);
 					} catch (Exception ee) {
 						System.out.println("Could not create Casino gui");

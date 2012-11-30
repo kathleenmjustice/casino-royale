@@ -11,12 +11,14 @@ public class Client
 {
 	public static void main(String[] args)
 	{
-		try {
+		/*try {
 			ServerHostInterface shi = ClientRPC.getServerInterface();
 			LoginWindow.init(shi);
 		} catch (MalformedURLException | RemoteException | NotBoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		*/
+		LoginWindow.init();
 	}
 }
