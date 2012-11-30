@@ -1,13 +1,13 @@
 package croyale;
 
-import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
-import croyale.rpc.ServerRPC;
+import croyale.rpc.Constants;
+import croyale.rpc.ServerHost;
 
-public class Server
+public class Server implements Constants
 {
 	public static void main(String[] args)
 	{
@@ -27,9 +27,9 @@ public class Server
 		
 		try {
 			Database dbf = new Database("connect");
-			ServerRPC.init(dbf, registry);
-		} catch( AlreadyBoundException abe ){
-			System.out.println("Already bound");
+//			ServerRPC.init(dbf, registry);
+			
+			registry.rebind(SERVER_NAME, new ServerHost(dbf));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

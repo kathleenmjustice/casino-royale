@@ -1,20 +1,27 @@
 package croyale;
 
-import java.net.MalformedURLException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 
-import croyale.rpc.ClientRPC;
+import croyale.rpc.Constants;
 import croyale.rpc.ServerHostInterface;
 
-public class Client
+public class Client implements Constants
 {
 	public static void main(String[] args)
 	{
 		try {
-			ServerHostInterface shi = ClientRPC.getServerInterface();
+//			ServerHostInterface shi = ClientRPC.getServerInterface();
+			
+			Registry registry = LocateRegistry.getRegistry("76.241.64.118", 2020);
+			ServerHostInterface shi = (ServerHostInterface)registry.lookup(SERVER_NAME);
+			
+			shi.checkPlayer("michael", "password");
+			
 			LoginWindow.init(shi);
-		} catch (MalformedURLException | RemoteException | NotBoundException e) {
+		} catch (RemoteException | NotBoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
