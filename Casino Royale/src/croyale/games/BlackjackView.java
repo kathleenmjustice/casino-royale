@@ -1,5 +1,6 @@
 package croyale.games;
 
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -38,7 +39,7 @@ public class BlackjackView{
 	private JPanel m_balanceL = new JPanel();
 	private JTextField m_balanceTf = new JTextField(20);
 	private JTextArea m_outputTa = new JTextArea(40, 40);
-	private JLabel backgroundPane = new ImagePanel(new ImageIcon("src/croyale/resources/BlackjackTable.png").getImage());
+	private JLabel backgroundPane;
 	private JPanel contentPane;
 
 	BlackjackView(JPanel gamePane){
@@ -50,29 +51,32 @@ public class BlackjackView{
 
 		// Initialize containers
 		contentPane.removeAll();
+		contentPane.setBackground(new Color(0,176,80));
 		JLayeredPane mainPane = new JLayeredPane();
 		
 		// Set background image as panel
 		//JLabel backgroundPane = new ImagePanel(new ImageIcon("src/croyale/resources/BlackjackTable.png").getImage());
+		backgroundPane = new ImagePanel(new ImageIcon("src/croyale/resources/BlackjackTable.png").getImage());
 		backgroundPane.setOpaque(false);
 
 		//Layout the components.
 		JPanel formContainer = new JPanel();
 		formContainer.setLayout(new BoxLayout(formContainer,BoxLayout.Y_AXIS));
 		formContainer.setOpaque(false);
-		formContainer.setBounds(300, 200, 400, 260);
+		//formContainer.setBounds(300, 200, 400, 260);
 		//JButton m_hitBtn = new JButton(new ImageIcon("src/croyale/resources/HIT poker chip.png"));
 		//JButton standButton= new JButton(new ImageIcon("src/croyale/resources/HIT poker chip.png"));
 		//m_hitBtn.setPreferredSize(new Dimension(20,20));
 		
 		m_enterBetL.setLocation(10, 100);
 		m_enterBetL.setLayout(new BoxLayout(m_enterBetL, BoxLayout.X_AXIS));
-		m_enterBetL.setPreferredSize(new Dimension(100,5));
+		//m_enterBetL.setPreferredSize(new Dimension(100,5));
 		JLabel m_enterBetLText = new JLabel("Enter amount of Bet:");
 		m_enterBetL.add(m_enterBetLText);
+		m_enterBetL.setMaximumSize(m_enterBetL.getPreferredSize());
 		formContainer.add(this.m_enterBetL);
 		formContainer.add(Box.createRigidArea(new Dimension(5,0)));
-		
+		m_betTf.setMaximumSize(m_betTf.getPreferredSize());
 		formContainer.add(this.m_betTf);
 		formContainer.add(Box.createRigidArea(new Dimension(5,0)));
 
@@ -84,7 +88,7 @@ public class BlackjackView{
 		m_enterPlayL.add(m_enterPlayLText);
 		formContainer.add(this.m_enterPlayL);
 		formContainer.add(Box.createRigidArea(new Dimension(5,0)));
-		
+		m_currentPlayTf.setMaximumSize(m_currentPlayTf.getPreferredSize());
 		formContainer.add(this.m_currentPlayTf);
 		formContainer.add(this.m_playBtn);
 		
@@ -95,15 +99,20 @@ public class BlackjackView{
 		m_balanceL.add(m_balanceLText);
 		formContainer.add(this.m_balanceL);
 		formContainer.add(Box.createRigidArea(new Dimension(5,0)));
-
 		m_balanceTf.setLayout(new BoxLayout(m_balanceTf, BoxLayout.X_AXIS));
+		m_balanceTf.setMaximumSize(m_balanceTf.getPreferredSize());
 		formContainer.add(this.m_balanceTf);
 		
 		formContainer.add(this.m_outputTa);
 		
-		//mainPane.add(formContainer,1);
-		//mainPane.add(backgroundPane,2);
-		contentPane.add(formContainer);
+		
+		mainPane.setPreferredSize(new Dimension(800,1000));
+		mainPane.add(formContainer,1);
+		mainPane.add(backgroundPane,2);
+		contentPane.add(mainPane);
+		backgroundPane.setBounds(50,0,600,800);
+		formContainer.setBounds(50,100,600,800);
+		contentPane.setBounds(0,0,600,800);
 		contentPane.revalidate();
 	}
 	
