@@ -19,43 +19,53 @@ public class BlackjackController {
 		view = v;
 		view.setMoney(model.getMoney());
 		
-		view.addPlayListener(new PlayListener());
+		view.addHitListener(new HitListener());
+		view.addStandListener(new StandListener ());
 		view.addBetListener(new BetListener());
-		
+		view.addNewGameListener(new NewGameListener());
 		view.displayCards(model.deal());
 	}
-	
-	private class PlayListener implements ActionListener {
+	private class HitListener implements ActionListener {
+		public void actionPerformed(ActionEvent e){
+			try{
+				model.dealOneCard(model.getUserHand());
+		         if (model.getUserHand().getBlackjackValue() > 21) {
+		        	 view.drawLose();
+		         }
+			}catch (Exception e2){
+				;
+			}
+		}
+	}
+	private class StandListener implements ActionListener {
 		public void actionPerformed(ActionEvent e){
 			try {
-				String source = ((JButton)e.getSource()).getText();
-				if(model.getDealerHand().getBlackjackValue() == 21)
+			//String source = ((JButton)e.getSource()).getText();
+			/*	if(model.getDealerHand().getBlackjackValue() == 21)
 					view.drawLose();
 				else if (model.getUserHand().getBlackjackValue() == 21)
 					view.drawWin();
-				if (source == "Hit!"){
-					model.hit();
-					view.drawLose();
-				}
-				else if (source == "Stand!"){
+				*///else if (source == "Stand!"){
 					
 					while (model.getDealerHand().getBlackjackValue() <= 16) {
 						 model.dealOneCard(model.getDealerHand());
 				         if (model.getDealerHand().getBlackjackValue() > 21) {
-				            System.out.println();
 				           // Dealer busted by going over 21.  You win.
-				           model.setUserWins(true);
+				        	model.setUserWins(true);
 				         }
-				      }
-				    if (model.getUserWins() == true)
-				    	view.drawWin();
-				    else
-				    	view.drawLose();
-				}
-				else if (source == "New Game?"){
+				    }
+					if(!model.getUserWins()){
+						if (model.getDealerHand().getBlackjackValue() >= model.getUserHand().getBlackjackValue())
+							view.drawLose();
+						else
+							view.drawWin();
+					}
+					else
+						view.drawWin();
+				/*else if (source == "New Game?"){
 					view.reset();
 					view.displayCards(model.deal());
-				}
+				}*/
 				//Play currentPlay = BlackjackController.this.m_view.getCurrentPlay();
 				
 				//BlackjackController.this.m_view.setMoney(BlackjackController.this.m_model.getMoney());
@@ -65,7 +75,17 @@ public class BlackjackController {
 			}
 		}
 	}
+	private class NewGameListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			view.reset();
+			view.displayCards(model.deal());
+		}
+	}
 	private class BetListener implements ActionListener {
+		public BetListener() {
+			// TODO Auto-generated constructor stub
+		}
+
 		public void actionPerformed(ActionEvent e){
 			int bet;
 			try {
