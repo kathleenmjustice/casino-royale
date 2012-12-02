@@ -16,11 +16,17 @@ public class BlackjackModel {
 	
 	private static final String INITIAL_VALUE = "100";
 	private BigInteger money;
+    boolean userWins;   // Did the user win the game?
 	
 	public BlackjackModel() {
 		reset();
 	}
-	
+	public boolean getUserWins(){
+		return userWins;
+	}
+	public void setUserWins(boolean wins){
+		userWins = wins;
+	}
 	public void reset() {
 		money = new BigInteger(INITIAL_VALUE);
 	}
@@ -40,11 +46,22 @@ public class BlackjackModel {
 	public void stand(){
 		
 	}
-	
-	public Hand[] deal(){
-		 Deck deck;                  // A deck of cards.  A new deck for each game.
-	      BlackjackHand dealerHand;   // The dealer's hand.
-	      BlackjackHand userHand;     // The user's hand.
+	private Deck deck;                  // A deck of cards.  A new deck for each game.
+	private BlackjackHand dealerHand;	// The dealer's hand.
+	private BlackjackHand userHand;		// The user's hand.
+	public BlackjackHand getDealerHand(){
+		System.out.println("dealerHand: " + dealerHand.getBlackjackValue());
+		return dealerHand;	
+	}
+	public BlackjackHand getUserHand(){
+		System.out.println("userHand: " + userHand.getBlackjackValue());
+		return userHand;
+	}
+	public Hand dealOneCard(BlackjackHand myHand){
+		myHand.addCard(deck.dealCard());
+		return myHand;
+	}
+	public Hand[] deal(){   
 	      
 	      deck = new Deck();
 	      dealerHand = new BlackjackHand();
@@ -63,7 +80,7 @@ public class BlackjackModel {
 	      //   The player with Blackjack wins the game.  Dealer wins ties.
 	      
 	      
-	      if (dealerHand.getBlackjackValue() == 21) {
+	    /*  if (dealerHand.getBlackjackValue() == 21) {
 	           System.out.println("Dealer has the " + dealerHand.getCard(0)
 	                                   + " and the " + dealerHand.getCard(1) + ".");
 	           System.out.println("User has the " + userHand.getCard(0)
@@ -80,7 +97,7 @@ public class BlackjackModel {
 	           System.out.println();
 	           System.out.println("You have Blackjack.  You win.");
 	      }
-	      
+	      */
 	      //  If neither player has Blackjack, play the game.  First the user 
 	      //    gets a chance to draw cards (i.e., to "Hit").  The while loop ends 
 	      //    when the user chooses to "Stand".  If the user goes over 21,
@@ -171,32 +188,33 @@ public class BlackjackModel {
       //    when the user chooses to "Stand".  If the user goes over 21,
       //    the user loses immediately.
       
-     }
-    /*  boolean playBlackjack(){
- //     while (true) {
+     }*/
+ /*     boolean playBlackjack(){
+      while (true) {
           
            // Display user's cards, and let user decide to Hit or Stand. 
 
            System.out.println();
            System.out.println();
            System.out.println("Your cards are:");
-           for ( int i = 0; i < userHand.getCardCount(); i++ )
+  
+    	  for ( int i = 0; i < userHand.getCardCount(); i++ )
               System.out.println("    " + userHand.getCard(i));
            System.out.println("Your total is " + userHand.getBlackjackValue());
            System.out.println();
            System.out.println("Dealer is showing the " + dealerHand.getCard(0));
            System.out.println();
          //  System.out.print("Hit (H) or Stand (S)? ");
-           /* If the user Hits, the user gets a card.  If the user Stands,
-              the loop ends (and it's the dealer's turn to draw cards).
-           */           
+           // If the user Hits, the user gets a card.  If the user Stands,
+           //   the loop ends (and it's the dealer's turn to draw cards).
+                      
    //   	} // end while loop
       
-      /* If we get to this point, the user has Stood with 21 or less.  Now, it's
-         the dealer's chance to draw.  Dealer draws cards until the dealer's
-         total is > 16.  If dealer goes over 21, the dealer loses.
-      */
-   /*   System.out.println();
+      // If we get to this point, the user has Stood with 21 or less.  Now, it's
+      //   the dealer's chance to draw.  Dealer draws cards until the dealer's
+      //   total is > 16.  If dealer goes over 21, the dealer loses.
+      
+      System.out.println();
       System.out.println("User stands.");
       System.out.println("Dealer's cards are");
       System.out.println("    " + dealerHand.getCard(0));

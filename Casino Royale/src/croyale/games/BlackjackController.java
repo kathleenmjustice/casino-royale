@@ -5,6 +5,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 
+import croyale.gameutil.Card;
+
 //import croyale.gameutil.Play;
 
 
@@ -27,13 +29,28 @@ public class BlackjackController {
 		public void actionPerformed(ActionEvent e){
 			try {
 				String source = ((JButton)e.getSource()).getText();
+				if(model.getDealerHand().getBlackjackValue() == 21)
+					view.drawLose();
+				else if (model.getUserHand().getBlackjackValue() == 21)
+					view.drawWin();
 				if (source == "Hit!"){
 					model.hit();
 					view.drawLose();
 				}
 				else if (source == "Stand!"){
-					model.stand();
-					view.drawWin();
+					
+					while (model.getDealerHand().getBlackjackValue() <= 16) {
+						 model.dealOneCard(model.getDealerHand());
+				         if (model.getDealerHand().getBlackjackValue() > 21) {
+				            System.out.println();
+				           // Dealer busted by going over 21.  You win.
+				           model.setUserWins(true);
+				         }
+				      }
+				    if (model.getUserWins() == true)
+				    	view.drawWin();
+				    else
+				    	view.drawLose();
 				}
 				else if (source == "New Game?"){
 					view.reset();
